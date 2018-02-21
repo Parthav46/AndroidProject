@@ -5,14 +5,13 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.NavUtils;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -109,8 +108,6 @@ public class AddNewActivity extends AppCompatActivity implements GoogleMap.OnMyL
                 }
                 Log.e("Database","Databse inset id: "  + String.valueOf(smartMapsdb.addListedPlace(listedPlace)));
                 Log.e("selected category:",listedPlace.category);
-                
-                NavUtils.navigateUpFromSameTask(AddNewActivity.this);
             }
         });
 

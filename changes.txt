@@ -9,7 +9,7 @@ Changes in:
 	2. Xml:
 		1. Added Progressbar to show wait till location fetch process is going on
 
-2. AddNewActivity:
+3. AddNewActivity:
 	1. Java:
 		1.  
 	2. Xml:
