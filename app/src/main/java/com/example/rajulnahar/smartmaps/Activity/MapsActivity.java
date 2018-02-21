@@ -22,6 +22,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -63,6 +64,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     SmartMapsdb smartMapsdb;
     double lat = 0;
     double lon = 0;
+    ProgressBar loading;
     ImageView settings;
     LinearLayout advancesearch;
     LinearLayout likeus;
@@ -121,6 +123,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         new AsyncTask<Void,Void,Void>(){
             @Override
             protected Void doInBackground(Void... params) {
+
+                loading = (ProgressBar) findViewById(R.id.loading);
+                loading.setVisibility(View.VISIBLE);
+
                 while (!gpsfixed){
                     try {
                         Thread.sleep(500);
@@ -135,6 +141,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
                 locationLocked();
+
+                loading = (ProgressBar) findViewById(R.id.loading);
+                loading.setVisibility(View.GONE);
+
             }
         }.execute();
 
@@ -251,153 +261,161 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     public void onClicks(){
-        settings.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(MapsActivity.this, "Settings", Toast.LENGTH_SHORT).show();
-                distancedialog.show();
-            }
-        });
+        loading = (ProgressBar) findViewById(R.id.loading);
 
-        advancesearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(MapsActivity.this, "Advance Search", Toast.LENGTH_SHORT).show();
-                Constants.selectedCategories.clear();
-                advsearch.show();
+            settings.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (loading.getVisibility() != View.VISIBLE) {
+                        Toast.makeText(MapsActivity.this, "Settings", Toast.LENGTH_SHORT).show();
+                        distancedialog.show();
+                    }
+                }
+            });
 
+            advancesearch.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (loading.getVisibility() != View.VISIBLE) {
+                        Toast.makeText(MapsActivity.this, "Advance Search", Toast.LENGTH_SHORT).show();
+                        Constants.selectedCategories.clear();
+                        advsearch.show();
+                    }
 
-            }
-        });
+                }
+            });
 
-        likeus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            likeus.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
                /* Toast.makeText(MapsActivity.this, "Like us", Toast.LENGTH_SHORT).show();
                 Uri uri = Uri.parse("https://www.facebook.com/Future-Smart-Technologies-Pvt-Ltd-993516597384645/");
                 Intent intent = new Intent(Intent.ACTION_VIEW,uri);
                 startActivity(intent);*/
-            }
-        });
+                }
+            });
 
-        rateus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(MapsActivity.this, "Rate us", Toast.LENGTH_SHORT).show();
+            rateus.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(MapsActivity.this, "Rate us", Toast.LENGTH_SHORT).show();
                /* Uri uri = Uri.parse("https://play.google.com/store/apps/details?id=com.bigduckgames.flowbridges&hl=en");
                 Intent intent = new Intent(Intent.ACTION_VIEW,uri);
                 startActivity(intent);*/
-            }
-        });
-        shareit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(MapsActivity.this, "Share", Toast.LENGTH_SHORT).show();
+                }
+            });
+            shareit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(MapsActivity.this, "Share", Toast.LENGTH_SHORT).show();
                 /*String bla = "https://play.google.com/store/apps/details?id=com.bigduckgames.flowbridges&hl=en";
                 Intent sharingIntent = new Intent(Intent.ACTION_SEND);
                 sharingIntent.setType("text/plain");
                 sharingIntent.putExtra(Intent.EXTRA_TEXT,bla);
                 startActivity(Intent.createChooser(sharingIntent,"Select to share"));*/
-            }
-        });
+                }
+            });
 
-        listedplace.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(MapsActivity.this, "List", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(MapsActivity.this,ListedPlaceActivity.class));
-            }
-        });
+            listedplace.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (loading.getVisibility() != View.VISIBLE) {
+                        Toast.makeText(MapsActivity.this, "List", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(MapsActivity.this, ListedPlaceActivity.class));
+                    }
+                }
+            });
 
-        addnew.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(MapsActivity.this, "Add new", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(MapsActivity.this,AddNewActivity.class);
-                startActivity(intent);
-            }
-        });
+            addnew.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (loading.getVisibility() != View.VISIBLE) {
+                        Toast.makeText(MapsActivity.this, "Add new", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(MapsActivity.this, AddNewActivity.class);
+                        startActivity(intent);
+                    }
+                }
+            });
 
-        inkm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                inmiles.setChecked(false);
-                iskm = true;
-            }
-        });
+            inkm.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    inmiles.setChecked(false);
+                    iskm = true;
+                }
+            });
 
-        inmiles.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                inkm.setChecked(false);
-                //distance miles mai count hoga
-                iskm = false;
-            }
-        });
+            inmiles.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    inkm.setChecked(false);
+                    //distance miles mai count hoga
+                    iskm = false;
+                }
+            });
 
-        avdSearchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                advsearch.dismiss();
-                mMap.clear();
-                mMap.addMarker(new MarkerOptions().position(new LatLng(Constants.location.getLatitude(), Constants.location.getLongitude()))
-                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
-               listedPlaceList = smartMapsdb.getListedlace();
-                for(int i=0;i<listedPlaceList.size();i++){
-                    double distance = distance(Constants.location.getLatitude(),Constants.location.getLongitude(),Double.parseDouble(listedPlaceList.get(i).latitude),Double.parseDouble(listedPlaceList.get(i).longitude));
-                    for(int j = 0; j < Constants.selectedCategories.size(); j++){
-                        if(listedPlaceList.get(i).category.contains(Constants.selectedCategories.get(j))){
-                            if(iskm){
-                                if(distance<distanceVal)
-                                    mMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(listedPlaceList.get(i).latitude),Double.parseDouble(listedPlaceList.get(i).longitude))));
-                            }
-                            else {
-                                if(distance*0.62<distanceVal)
-                                    mMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(listedPlaceList.get(i).latitude),Double.parseDouble(listedPlaceList.get(i).longitude))));
+            avdSearchButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    advsearch.dismiss();
+                    mMap.clear();
+                    mMap.addMarker(new MarkerOptions().position(new LatLng(Constants.location.getLatitude(), Constants.location.getLongitude()))
+                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
+                    listedPlaceList = smartMapsdb.getListedlace();
+                    for (int i = 0; i < listedPlaceList.size(); i++) {
+                        double distance = distance(Constants.location.getLatitude(), Constants.location.getLongitude(), Double.parseDouble(listedPlaceList.get(i).latitude), Double.parseDouble(listedPlaceList.get(i).longitude));
+                        for (int j = 0; j < Constants.selectedCategories.size(); j++) {
+                            if (listedPlaceList.get(i).category.contains(Constants.selectedCategories.get(j))) {
+                                if (iskm) {
+                                    if (distance < distanceVal)
+                                        mMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(listedPlaceList.get(i).latitude), Double.parseDouble(listedPlaceList.get(i).longitude))));
+                                } else {
+                                    if (distance * 0.62 < distanceVal)
+                                        mMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(listedPlaceList.get(i).latitude), Double.parseDouble(listedPlaceList.get(i).longitude))));
+                                }
                             }
                         }
+
+
                     }
 
-
                 }
+            });
+            ll_favourite.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Favourites favourites = new Favourites();
+                    favourites.latitude = String.valueOf(latitudePOISelected);
+                    favourites.longitude = String.valueOf(longitudePOISelected);
+                    long arc = smartMapsdb.addFavourites(favourites);
+                    Log.e("add to fav", String.valueOf(arc));
+                    markerSelectedPoi.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
+                    poiPopup.dismiss();
+                }
+            });
+            ll_share.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Constants.selectedCategories.clear();
+                    Intent intent = new Intent(MapsActivity.this, ShareActivity.class);
+                    startActivity(intent);
+                }
+            });
+            tvDrivingDirection.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Constants.ModeDriving = TransportMode.DRIVING;
+                    startActivity(new Intent(MapsActivity.this, DrivingDirectionsActivity.class));
+                }
+            });
 
-            }
-        });
-        ll_favourite.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Favourites favourites = new Favourites();
-                favourites.latitude = String.valueOf(latitudePOISelected);
-                favourites.longitude = String.valueOf(longitudePOISelected);
-                long arc =  smartMapsdb.addFavourites(favourites);
-                Log.e("add to fav",String.valueOf(arc));
-                markerSelectedPoi.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
-                poiPopup.dismiss();
-            }
-        });
-        ll_share.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Constants.selectedCategories.clear();
-                Intent intent = new Intent(MapsActivity.this,ShareActivity.class);
-                startActivity(intent);
-            }
-        });
-        tvDrivingDirection.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Constants.ModeDriving = TransportMode.DRIVING;
-                startActivity(new Intent(MapsActivity.this,DrivingDirectionsActivity.class));
-            }
-        });
-
-        tvWalkingDirection.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Constants.ModeDriving = TransportMode.WALKING;
-                startActivity(new Intent(MapsActivity.this,DrivingDirectionsActivity.class));
-            }
-        });
+            tvWalkingDirection.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Constants.ModeDriving = TransportMode.WALKING;
+                    startActivity(new Intent(MapsActivity.this, DrivingDirectionsActivity.class));
+                }
+            });
     }
 
     private double distance(double lat1, double lon1, double lat2, double lon2) {

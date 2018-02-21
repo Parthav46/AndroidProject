@@ -1,0 +1,16 @@
+Changes in:
+
+1. Manifest:
+	1. Made "MapsActivity" parent of "AddNewActivity" so upon save, we get back to MapsActivity and don't save a place twice by mistake.
+
+2. MapsActivity:
+	1.Java:
+		1. Disabled buttons until location fetch is going on
+	2. Xml:
+		1. Added Progressbar to show wait till location fetch process is going on
+
+2. AddNewActivity:
+	1. Java:
+		1.  
+	2. Xml:
+		1. Removed unnecessary buttons lying under the "save" and "save and share" options.
